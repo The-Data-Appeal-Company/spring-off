@@ -24,3 +24,5 @@ jobs:
       run: ./gradlew build test
     - name: Coverage
       run: ./gradlew check jacocoTestReport && bash <(curl -s https://codecov.io/bash) -t $CODECOV_TOKEN
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
