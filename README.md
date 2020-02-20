@@ -1,5 +1,7 @@
 # spring-off
 
+[ ![Download](https://api.bintray.com/packages/datappeal/datappeal/spring-off/images/download.svg) ](https://bintray.com/datappeal/datappeal/spring-off/_latestVersion)
+
 ### Graceful shutdown for spring boot in running kubernetes
 
 spring-off allow graceful shutdown of you spring boot based api by taking advatage 
@@ -34,6 +36,16 @@ In order to activate the graceful shutdown you must add the *@GracefulShutdown* 
 You must switch your readiness probe to the spring-off managed endpoint `/ready`
 
 
+### Install
 
+```groovy
+repositories {
+    maven {
+        url  "https://dl.bintray.com/datappeal/datappeal" 
+    }
+} 
+
+implementation 'io.datappeal.spring:spring-off:<version>'
+```
 
 
