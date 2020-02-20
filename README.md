@@ -4,6 +4,10 @@
 ![Build](https://github.com/The-Data-Appeal-Company/spring-off/workflows/Build/badge.svg)
 [![codecov](https://codecov.io/gh/The-Data-Appeal-Company/spring-off/branch/master/graph/badge.svg)](https://codecov.io/gh/The-Data-Appeal-Company/spring-off)
 
+
+We hope you and your offspring will gracefully turn off spring using spring-off :)
+
+
 ### Graceful shutdown for spring boot in running kubernetes
 
 spring-off allow graceful shutdown of you spring boot based api by taking advatage 
