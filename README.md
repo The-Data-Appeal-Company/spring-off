@@ -26,7 +26,7 @@ In order to activate the graceful shutdown you must add the *@GracefulShutdown* 
     @SpringBootApplication
     public static class MySpringApplication {
         public static void main(String[] args) {
-            GracefulShutdownApp.run(TestSpringApplication.class, args);
+            GracefulShutdownApp.run(MySpringApplication.class, args);
         }
     }
 ``` 
