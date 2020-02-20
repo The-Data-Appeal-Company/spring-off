@@ -1,0 +1,118 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        jcenter()
+    }
+}
+
+plugins {
+    id 'java'
+    id "maven-publish"
+    id "com.jfrog.bintray" version "1.8.4"
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    jcenter()
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives sourcesJar
+}
+
+ext {
+    version = "0.3"
+}
+
+def pomConfig = {
+    licenses {
+        license {
+            name "The Apache Software License, Version 2.0"
+            url "http://www.apache.org/licenses/LICENSE-2.0.txt"
+            distribution "repo"
+        }
+    }
+    developers {
+        developer {
+            id "thombergs"
+            name "Tom Hombergs"
+            email "tom.hombergs@gmail.com"
+        }
+    }
+
+    scm {
+        url "https://github.com/thombergs/myAwesomeLib"
+    }
+}
+
+publishing {
+    publications {
+        mavenPublication(MavenPublication) {
+            from components.java
+            artifact sourcesJar {
+                classifier "sources"
+            }
+            groupId 'io.datappeal.spring'
+            artifactId 'spring-off'
+            version "0.3"
+            pom.withXml {
+                def root = asNode()
+                root.appendNode('description', 'spring graceful shutdown on k8s')
+                root.appendNode('name', 'spring-off')
+                root.appendNode('url', 'https://github.com/thombergs/myAwesomeLib')
+                root.children().last() + pomConfig
+            }
+        }
+    }
+}
+
+bintray {
+    user = "${bt_user}"
+    key = "${bt_apikey}"
+    publish = true
+    publications = ['mavenPublication']
+    pkg {
+        repo = "datappeal"
+        name = 'spring-off'
+        userOrg = 'datappeal'
+        licenses = ['GPL-3.0-or-later']
+        labels = ['spring', 'graceful-shutdown', "kubernetes"]
+        vcsUrl = 'https://github.com/the-data-appeal-company/spring-off.git'
+        version "0.3"
+    }
+}
+
+
+group 'io.datappeal.spring.off'
+version ext.version
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compileOnly group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.2.4.RELEASE'
+
+    testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.2.4.RELEASE'
+    testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.15.0'
+    testImplementation group: 'org.mockito', name: 'mockito-core', version: '3.2.4'
+
+    testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.2.4.RELEASE'
+    testImplementation group: 'org.springframework', name: 'spring-web', version: '5.2.3.RELEASE'
+
+    testImplementation "org.junit.jupiter:junit-jupiter-api:5.3.1"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.3.1"
+}
+
+test {
+    useJUnitPlatform()
+}
