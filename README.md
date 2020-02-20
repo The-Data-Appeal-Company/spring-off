@@ -2,6 +2,7 @@
 
 [ ![Download](https://api.bintray.com/packages/datappeal/datappeal/spring-off/images/download.svg) ](https://bintray.com/datappeal/datappeal/spring-off/_latestVersion)
 ![Build](https://github.com/The-Data-Appeal-Company/spring-off/workflows/Build/badge.svg)
+[![codecov](https://codecov.io/gh/The-Data-Appeal-Company/spring-off/branch/master/graph/badge.svg)](https://codecov.io/gh/The-Data-Appeal-Company/spring-off)
 
 ### Graceful shutdown for spring boot in running kubernetes
 
