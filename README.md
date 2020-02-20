@@ -1,6 +1,6 @@
 # spring-off
 
-###Graceful shutdown for spring boot in running kubernetes
+### Graceful shutdown for spring boot in running kubernetes
 
 spring-off allow graceful shutdown of you spring boot based api by taking advatage 
 of the kubernetes readyness probe it allow safe instance terminations by stopping 

@@ -95,10 +95,6 @@ version ext.version
 
 sourceCompatibility = 1.8
 
-repositories {
-    mavenCentral()
-}
-
 dependencies {
     compileOnly group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.2.4.RELEASE'
 
