@@ -114,21 +114,16 @@ test {
     useJUnitPlatform()
 }
 
-task codeCoverageReport(type: JacocoReport) {
-    executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
-
-    subprojects.each {
-        sourceSets it.sourceSets.main
-    }
-
+jacoco {
+    toolVersion = "0.8.5"
+    reportsDir = file("$buildDir/jacoco")
+}
+jacocoTestReport {
     reports {
         xml.enabled true
-        xml.destination file("${buildDir}/reports/jacoco/report.xml")
-        html.enabled false
+        html.enabled true
         csv.enabled false
+        html.destination file("${buildDir}/jacocoHtml")
     }
 }
 
-codeCoverageReport.dependsOn {
-    subprojects*.test
-}
