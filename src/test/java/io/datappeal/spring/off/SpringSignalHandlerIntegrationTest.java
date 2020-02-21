@@ -2,6 +2,7 @@ package io.datappeal.spring.off;
 
 import io.datappeal.spring.off.app.GracefulShutdownApp;
 import io.datappeal.spring.off.common.TestableSignalListener;
+import io.datappeal.spring.off.configuration.FixedShutdownConfiguration;
 import io.datappeal.spring.off.filter.InFlightCounter;
 import io.datappeal.spring.off.shutdown.Shutdowner;
 import org.junit.jupiter.api.Test;
@@ -40,8 +41,28 @@ public class SpringSignalHandlerIntegrationTest {
     public void shouldShutDownWhenTriggered() {
         this.testableSignalListener.trigger();
         Mockito.verify(shutdowner).shutdown();
-
     }
+
+
+    @Test
+    public void shouldWaitForRequestCompletion() {
+        Mockito.when(inFlightCounter.inFlight())
+                .thenReturn(3L)
+                .thenReturn(1L)
+                .thenReturn(0L);
+
+        final SpringSignalHandler signalHandler = new SpringSignalHandler(
+                shutdowner,
+                inFlightCounter,
+                new FixedShutdownConfiguration(0, 100L)
+        );
+
+        signalHandler.run();
+
+        Mockito.verify(inFlightCounter, Mockito.times(3)).inFlight();
+        Mockito.verify(shutdowner).shutdown();
+    }
+
 
     @GracefulShutdown
     @SpringBootApplication

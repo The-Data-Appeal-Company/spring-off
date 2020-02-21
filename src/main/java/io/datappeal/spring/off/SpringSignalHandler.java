@@ -4,6 +4,7 @@ import io.datappeal.spring.off.configuration.ShutdownConfiguration;
 import io.datappeal.spring.off.deadline.Deadline;
 import io.datappeal.spring.off.filter.InFlightCounter;
 import io.datappeal.spring.off.shutdown.Shutdowner;
+import io.datappeal.spring.off.signal.RuntimeSignalListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,7 +32,7 @@ public class SpringSignalHandler implements Runnable {
     public void run() {
         logger.info("received termination signal, stopping ready controller");
 
-        this.sleep(configuration.shutdownBaseDelay());
+        this.sleepWithDefer(configuration.shutdownBaseDelay(), shutdowner::shutdown);
 
         final Deadline deadline = Deadline.of(configuration.shutdownMaxDeadline(), TimeUnit.MILLISECONDS).fromNow();
 
@@ -41,17 +42,18 @@ public class SpringSignalHandler implements Runnable {
             }
 
             logger.info("waiting for {} requests", this.inFlightCounter.inFlight());
-            this.sleep(deadline.timeLeft() / 4);
+            this.sleepWithDefer(deadline.timeLeft() / 4, shutdowner::shutdown);
         }
 
         logger.info("graceful termination completed, shutting down spring");
         this.shutdowner.shutdown();
     }
 
-    private void sleep(long ms) {
+    private void sleepWithDefer(long ms, final Runnable onInterrupt) {
         try {
             Thread.sleep(ms);
         } catch (final InterruptedException e) {
+            onInterrupt.run();
             throw new RuntimeException(e);
         }
     }
