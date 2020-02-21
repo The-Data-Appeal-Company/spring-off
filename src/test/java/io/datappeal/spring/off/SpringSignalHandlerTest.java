@@ -91,7 +91,7 @@ public class SpringSignalHandlerTest {
     }
 
     @Test
-    void testRunShutdownHandlerInterruptException() {
+    void testRunShutdownHandlerInterruptException() throws InterruptedException {
         final Shutdowner shutdowner = Mockito.mock(Shutdowner.class);
         final InFlightCounter inFlightCounter = Mockito.mock(InFlightCounter.class);
 
@@ -105,6 +105,7 @@ public class SpringSignalHandlerTest {
         handlerThread.start();
 
         handlerThread.interrupt();
+        handlerThread.join();
 
         Mockito.verify(shutdowner).shutdown();
     }
