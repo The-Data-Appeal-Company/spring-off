@@ -29,27 +29,12 @@ artifacts {
 }
 
 ext {
-    version = "0.6"
+    version = "0.7"
 }
 
 def pomConfig = {
-    licenses {
-        license {
-            name "The Apache Software License, Version 2.0"
-            url "http://www.apache.org/licenses/LICENSE-2.0.txt"
-            distribution "repo"
-        }
-    }
-    developers {
-        developer {
-            id "thombergs"
-            name "Tom Hombergs"
-            email "tom.hombergs@gmail.com"
-        }
-    }
-
     scm {
-        url "https://github.com/thombergs/myAwesomeLib"
+        url "https://github.com/The-Data-Appeal-Company/spring-off"
     }
 }
 
@@ -62,7 +47,7 @@ publishing {
             }
             groupId 'io.datappeal.spring'
             artifactId 'spring-off'
-            version "0.6"
+            version "0.7"
             pom.withXml {
                 def root = asNode()
                 root.appendNode('description', 'spring graceful shutdown on k8s')
@@ -86,7 +71,7 @@ bintray {
         licenses = ['GPL-3.0-or-later']
         labels = ['spring', 'graceful-shutdown', "kubernetes"]
         vcsUrl = 'https://github.com/the-data-appeal-company/spring-off.git'
-        version "0.6"
+        version "0.7"
     }
 }
 
