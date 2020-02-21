@@ -36,10 +36,13 @@ public class GracefulShutdownConfiguration {
                 ReadyHandlerController.class
         );
 
+        final ShutdownConfiguration configuration = new FixedShutdownConfiguration();
+
         final SpringSignalHandler shutdownHandler = new SpringSignalHandler(
                 this.shutdowner,
                 readyHandlerController,
-                this.inFlightCounter
+                this.inFlightCounter,
+                configuration
         );
 
         this.signalListener.listen(shutdownHandler);

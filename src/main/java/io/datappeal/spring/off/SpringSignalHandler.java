@@ -1,5 +1,6 @@
 package io.datappeal.spring.off;
 
+import io.datappeal.spring.off.configuration.ShutdownConfiguration;
 import io.datappeal.spring.off.controller.ReadyHandler;
 import io.datappeal.spring.off.deadline.Deadline;
 import io.datappeal.spring.off.filter.InFlightCounter;
@@ -16,11 +17,18 @@ public class SpringSignalHandler implements Runnable {
     private final Shutdowner shutdowner;
     private final ReadyHandler readyHandler;
     private final InFlightCounter inFlightCounter;
+    private final ShutdownConfiguration configuration;
 
-    public SpringSignalHandler(Shutdowner shutdowner, ReadyHandler readyHandler, InFlightCounter inFlightCounter) {
+    public SpringSignalHandler(
+           final Shutdowner shutdowner,
+           final ReadyHandler readyHandler,
+           final InFlightCounter inFlightCounter,
+           final ShutdownConfiguration configuration
+    ) {
         this.shutdowner = shutdowner;
         this.readyHandler = readyHandler;
         this.inFlightCounter = inFlightCounter;
+        this.configuration = configuration;
     }
 
     @Override
@@ -28,10 +36,9 @@ public class SpringSignalHandler implements Runnable {
         logger.info("received termination signal, stopping ready controller");
         this.readyHandler.setReadiness(false);
 
-        // TODO Add fixed delay
+        this.sleep(configuration.shutdownBaseDelay());
 
-
-        final Deadline deadline = Deadline.of(30, TimeUnit.SECONDS).fromNow(); // TODO parametrize duration
+        final Deadline deadline = Deadline.of(configuration.shutdownMaxDeadline(), TimeUnit.MILLISECONDS).fromNow();
 
         while (!deadline.isExpired()) {
             if (this.inFlightCounter.inFlight() == 0) {
@@ -39,7 +46,7 @@ public class SpringSignalHandler implements Runnable {
             }
 
             logger.info("waiting for {} requests", this.inFlightCounter.inFlight());
-            sleep(deadline.timeLeft() / 4);
+            this.sleep(deadline.timeLeft() / 4);
         }
 
         logger.info("graceful termination completed, shutting down spring");
