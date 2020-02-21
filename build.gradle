@@ -29,7 +29,7 @@ artifacts {
 }
 
 ext {
-    version = "0.5"
+    version = "0.6"
 }
 
 def pomConfig = {
@@ -62,7 +62,7 @@ publishing {
             }
             groupId 'io.datappeal.spring'
             artifactId 'spring-off'
-            version "0.5"
+            version "0.6"
             pom.withXml {
                 def root = asNode()
                 root.appendNode('description', 'spring graceful shutdown on k8s')
@@ -86,7 +86,7 @@ bintray {
         licenses = ['GPL-3.0-or-later']
         labels = ['spring', 'graceful-shutdown', "kubernetes"]
         vcsUrl = 'https://github.com/the-data-appeal-company/spring-off.git'
-        version "0.5"
+        version "0.6"
     }
 }
 
