@@ -2,7 +2,7 @@ package io.datappeal.spring.off.signal;
 
 public class RuntimeSignalListener implements SignalListener {
 
-    private RuntimeSignalListener() {
+    public RuntimeSignalListener() {
     }
 
     @Override

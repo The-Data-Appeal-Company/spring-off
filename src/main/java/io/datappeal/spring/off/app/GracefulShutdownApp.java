@@ -1,10 +1,13 @@
-package io.datappeal.spring.off;
+package io.datappeal.spring.off.app;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 
-public class GracefulShutdownApp {
+public final class GracefulShutdownApp {
+
+    private GracefulShutdownApp() {
+    }
 
     public static ConfigurableApplicationContext run(final Class<?> clazz, final String... args) {
         return new SpringApplicationBuilder(clazz)

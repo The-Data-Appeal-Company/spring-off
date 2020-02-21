@@ -1,7 +1,6 @@
 package io.datappeal.spring.off;
 
 import io.datappeal.spring.off.configuration.GracefulShutdownConfiguration;
-import io.datappeal.spring.off.controller.ReadyHandlerController;
 import io.datappeal.spring.off.filter.AtomicInFlightCounter;
 import io.datappeal.spring.off.filter.InFlightRequestsFilter;
 import io.datappeal.spring.off.shutdown.SpringShutdowner;
@@ -21,7 +20,6 @@ import java.lang.annotation.Target;
         SpringShutdowner.class,
         InFlightRequestsFilter.class,
         AtomicInFlightCounter.class,
-        ReadyHandlerController.class,
 })
 public @interface GracefulShutdown {
 }

@@ -7,6 +7,7 @@ public class Deadline {
 
     private final long duration;
     private long begin;
+
     public Deadline(long duration) {
         this.duration = duration;
     }

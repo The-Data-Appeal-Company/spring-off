@@ -1,7 +1,6 @@
 package io.datappeal.spring.off;
 
 import io.datappeal.spring.off.configuration.ShutdownConfiguration;
-import io.datappeal.spring.off.controller.ReadyHandler;
 import io.datappeal.spring.off.deadline.Deadline;
 import io.datappeal.spring.off.filter.InFlightCounter;
 import io.datappeal.spring.off.shutdown.Shutdowner;
@@ -15,18 +14,15 @@ public class SpringSignalHandler implements Runnable {
     private static final Logger logger = LoggerFactory.getLogger(SpringSignalHandler.class);
 
     private final Shutdowner shutdowner;
-    private final ReadyHandler readyHandler;
     private final InFlightCounter inFlightCounter;
     private final ShutdownConfiguration configuration;
 
     public SpringSignalHandler(
-           final Shutdowner shutdowner,
-           final ReadyHandler readyHandler,
-           final InFlightCounter inFlightCounter,
-           final ShutdownConfiguration configuration
+            final Shutdowner shutdowner,
+            final InFlightCounter inFlightCounter,
+            final ShutdownConfiguration configuration
     ) {
         this.shutdowner = shutdowner;
-        this.readyHandler = readyHandler;
         this.inFlightCounter = inFlightCounter;
         this.configuration = configuration;
     }
@@ -34,7 +30,6 @@ public class SpringSignalHandler implements Runnable {
     @Override
     public void run() {
         logger.info("received termination signal, stopping ready controller");
-        this.readyHandler.setReadiness(false);
 
         this.sleep(configuration.shutdownBaseDelay());
 

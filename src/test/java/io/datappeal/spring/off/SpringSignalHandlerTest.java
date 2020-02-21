@@ -1,9 +1,9 @@
 package io.datappeal.spring.off;
 
+import io.datappeal.spring.off.app.GracefulShutdownApp;
 import io.datappeal.spring.off.common.Sleep;
 import io.datappeal.spring.off.common.TestableSignalListener;
 import io.datappeal.spring.off.configuration.FixedShutdownConfiguration;
-import io.datappeal.spring.off.controller.ReadyHandler;
 import io.datappeal.spring.off.filter.InFlightCounter;
 import io.datappeal.spring.off.shutdown.Shutdowner;
 import org.junit.jupiter.api.Test;
@@ -78,19 +78,15 @@ public class SpringSignalHandlerTest {
     @Test
     void testRunShutdownHandler() {
         final Shutdowner shutdowner = Mockito.mock(Shutdowner.class);
-        final ReadyHandler readyHandler = Mockito.mock(ReadyHandler.class);
         final InFlightCounter inFlightCounter = Mockito.mock(InFlightCounter.class);
 
         final SpringSignalHandler signalHandler = new SpringSignalHandler(
                 shutdowner,
-                readyHandler,
                 inFlightCounter,
                 FixedShutdownConfiguration.immediate()
         );
 
         signalHandler.run();
-
-        Mockito.verify(readyHandler).setReadiness(Mockito.eq(false));
         Mockito.verify(shutdowner).shutdown();
     }
 
